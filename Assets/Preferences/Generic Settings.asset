@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1bfe1b21379470bacb7b014344c43cd, type: 3}
+  m_Name: Generic Settings
+  m_EditorClassIdentifier: 
+  shellPrefab: {fileID: 8652576371252055448, guid: 5a73ec3135b5de147ab2c7a63eef5c9d, type: 3}
+  mapPointPrefab: {fileID: 5424003723243359919, guid: e2257bf28ea001e4cb9e7c328a84dc40, type: 3}
