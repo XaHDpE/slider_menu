@@ -1,6 +1,7 @@
 ﻿using System;
+using cubes;
+using input.slidermenu.controllers;
 using Lean.Touch;
-using scroll.scroll.swipe;
 using UnityEngine;
 
 namespace events
@@ -16,9 +17,9 @@ namespace events
             Debug.Log("CustomGameEvents initialized");
         }
         
-        public event Action<CubeCtr> OnHeadChanged;
+        public event Action<SliderMenuItemController> OnHeadChanged;
         
-        public void HeadChanged(CubeCtr cc)
+        public void HeadChanged(SliderMenuItemController cc)
         {
             OnHeadChanged?.Invoke(cc);
         }

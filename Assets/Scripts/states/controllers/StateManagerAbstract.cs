@@ -1,48 +1,34 @@
-﻿using models;
-using models.sparepart.iteration2;
+﻿using states.cubes;
 using UnityEngine;
 
 namespace states.controllers
 {
-    [RequireComponent(typeof(Transformable))]
+
     public abstract class StateManagerAbstract : MonoBehaviour, IStateManager
     {
-        private BaseState _initialState;
-        [SerializeField] private BaseState CurrentState { get; set; }
+        private CubeBaseState initialState;
+        private CubeBaseState CurrentState { get; set; }
 
-        protected void TransitionToState(BaseState state)
+        protected void TransitionToState(CubeBaseState state)
         {
             CurrentState?.ExitState(this);
             CurrentState = state;
             CurrentState.EnterState(this); 
         }
 
-        protected void SetInitialState(BaseState initState)
+        protected void SetInitialState(CubeBaseState initState)
         {
-            _initialState = initState;
-        }
-
-
-        public TransformableAbstract GetTransformable()
-        {
-            if (!TryGetComponent<TransformableAbstract>(out var res))
-                Debug.LogError("unable to GetTransformable");
-            return res;
-        }
-
-        public MonoBehaviour AttachedTo()
-        {
-            return this;
+            initialState = initState;
         }
 
         private void Awake()
         {
-            if (_initialState != null)
+            if (initialState != null)
             {
-                TransitionToState(_initialState);
+                TransitionToState(initialState);
             }
         }
-        
+
         private void Update()
         {
             CurrentState.LogicUpdate(this);

@@ -55,6 +55,11 @@ namespace helpers
                 rectMiddle.y + verticalSize / 2);
         }
         
+        public static bool CheckVisible(Camera cam, Vector3 pos)
+        {
+            return Screen.safeArea.Contains(cam.WorldToScreenPoint(pos));
+        }
+        
         
     }
 }

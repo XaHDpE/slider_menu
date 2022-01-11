@@ -1,12 +1,6 @@
-﻿using models;
-using UnityEngine;
-
-namespace states.controllers
+﻿namespace states.cubes
 {
     public interface IStateManager
     {
-        TransformableAbstract GetTransformable();
-        MonoBehaviour AttachedTo();
-
     }
 }

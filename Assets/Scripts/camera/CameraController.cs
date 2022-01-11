@@ -1,6 +1,5 @@
 ﻿using DG.Tweening;
 using helpers;
-using input;
 using UnityEngine;
 using bh = helpers.BoundsHelper;
 
@@ -95,14 +94,14 @@ namespace camera
             seq.PlayForward();
         }
 
-        public void RotateAround(float delta)
+        /*public void RotateAround(float delta)
         {
             transform.RotateAround(
                 FindObjectOfType<Carousel>().transform.position, 
                 Vector3.up, 
                 delta * Time.fixedDeltaTime
                 );
-        }
+        }*/
         
         
     }

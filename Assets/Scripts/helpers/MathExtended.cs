@@ -26,7 +26,6 @@ namespace helpers
             var n1 = m * q;
             var n2 = (n * m) > 0 ? (m * (q + 1)) : (m * (q - 1));
             return Math.Abs(n - n1) < Math.Abs(n - n2) ? n1 : n2;
-
         }
         
     }

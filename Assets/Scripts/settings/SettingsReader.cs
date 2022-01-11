@@ -4,11 +4,9 @@
 
     public class SettingsReader : MonoBehaviour {
         
-        public CarouselSettings carouselSettings;
         public GenericSettings genericSettings;
         public SliderMenuSettings sliderMenuSettings;
         
-        public static CarouselSettings Cs;
         public static GenericSettings Gs;
         public static SliderMenuSettings Sms;
         
@@ -24,9 +22,6 @@
                 Debug.LogWarning("A previously awakened Settings MonoBehaviour exists!", gameObject);
             }
             
-            if (Cs == null)
-                Cs = carouselSettings;
-
             if (Gs == null)
                 Gs = genericSettings;
 

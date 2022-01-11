@@ -251,6 +251,10 @@ namespace helpers
             trn.localScale = new Vector3 (globalScale.x / lScale.x,globalScale.y / lScale.y,globalScale.z / lScale.z );
         }
         
+        public static float CalculateOffset(Transform trn1, Transform trn2)
+        {
+            return trn1.localPosition.x - trn2.localPosition.x;
+        }
         
     }
 }

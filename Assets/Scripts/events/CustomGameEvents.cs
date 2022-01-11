@@ -1,8 +1,4 @@
 using System;
-using input;
-using input.model;
-using Lean.Touch;
-using scroll.scroll.swipe;
 using UnityEngine;
 
 namespace events
@@ -37,13 +33,6 @@ namespace events
         {
             OnMainCameraSet?.Invoke(mainCam);
         }
-
-        public event Action<RollItem> OnSetCurrentlyRunning;
-
-        public void SetCurrentlyRunning(RollItem ri)
-        {
-            OnSetCurrentlyRunning?.Invoke(ri);
-        }
-
+        
     }
 }
