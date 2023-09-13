@@ -11,36 +11,6 @@ namespace helpers
             return new Vector2(frustumWidth, frustumHeight);
         }
 
-        public static Vector3[] FrustumCorners(Camera cam, float distance)
-        {
-            var intArr = new Vector3[4];
-            cam.CalculateFrustumCorners(
-                new Rect(0, 0, 1, 1),
-                distance,
-                Camera.MonoOrStereoscopicEye.Mono,
-                intArr
-            );
-
-            var res = new Vector3[intArr.Length];
-            for (var i = 0; i < res.Length; i++)
-            {
-                res[i] = cam.transform.TransformPoint(intArr[i]);
-            }
-
-            return res;
-        }
-        
-
-        public static Vector3 GetVpRightBottom(Camera cam, float distance)
-        {
-            return cam.ViewportToWorldPoint(new Vector3(1, 0, distance));
-        }
-        
-        public static Vector3 GetVpLeftBottom(Camera cam, float distance)
-        {
-            return cam.ViewportToWorldPoint(new Vector3(0, 0, distance));
-        }
-        
         public static void ScaleRectangle(RectTransform myRect, float horizontalSize, float verticalSize)
         {
             //If you want the middle of the rect be somewhere else then the middle of the screen change it here (0 ... 1, 0 ... 1)
@@ -59,7 +29,6 @@ namespace helpers
         {
             return Screen.safeArea.Contains(cam.WorldToScreenPoint(pos));
         }
-        
-        
+
     }
 }

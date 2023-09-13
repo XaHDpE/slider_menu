@@ -7,9 +7,13 @@ namespace input.slidermenu.helpers
     {
         public static Vector3 SetStartPoint(Camera cam, float delta)
         {
-            return Mathf.Abs(delta).Equals(delta)
+            var res = Mathf.Abs(delta).Equals(delta)
                 ? cam.ViewportToWorldPoint(SettingsReader.Instance.sliderMenuSettings.westSpawnPoint)
                 : cam.ViewportToWorldPoint(SettingsReader.Instance.sliderMenuSettings.eastSpawnPoint);
+            
+            // Debug.DrawRay(res, Vector3.up * 5f, Color.green, 100);
+            
+            return res;
         }
         
     }

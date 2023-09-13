@@ -9,6 +9,7 @@ namespace states.controllers
         private readonly CubeMenuHeadState cubeMenuHeadState = new CubeMenuHeadState();
         private readonly CubeMenuIdleState spMenuIdleState = new CubeMenuIdleState();
         private readonly CubeMenuActiveState spMenuActiveState = new CubeMenuActiveState();
+        private readonly CubeMenuSelectedState spMenuSelectedState = new CubeMenuSelectedState();
 
         public CubeStateManager()
         {
@@ -28,6 +29,11 @@ namespace states.controllers
         public void MoveToActive()
         {
             TransitionToState(spMenuActiveState);
+        }
+
+        public void MoveToSelected()
+        {
+            TransitionToState(spMenuSelectedState);
         }
 
     }

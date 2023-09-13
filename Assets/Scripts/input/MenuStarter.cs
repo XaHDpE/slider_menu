@@ -1,18 +1,21 @@
+using camera;
 using input.slidermenu.controllers;
 using input.slidermenu.providers;
+using input.slidermenu.view;
 using UnityEngine;
 
 namespace input
 {
     public class MenuStarter : MonoBehaviour
     {
-        public Transform menuTop;
+        public SliderTopController menuTop;
+        public MenuCameraController menuCam;
+        public Transform elementsTop;
 
-        private void Start()
+        public void Init()
         {
-            var ar = SliderDataProvider.Fill(menuTop, 90);
-            menuTop.GetComponent<SliderTopController>().Init(ar, 0);
+            var menuViewManager = new SlideMenuViewManager(menuCam);
+            menuTop.Init(menuViewManager, new SliderDataProvider(elementsTop, menuTop));
         }
-    
     }
 }

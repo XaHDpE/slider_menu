@@ -1,4 +1,5 @@
 ﻿using System;
+using DG.Tweening;
 using events;
 using helpers;
 using input.slidermenu.controllers;
@@ -9,9 +10,9 @@ namespace states.cubes.menu
 {
     public class CubeMenuActiveState : CubeMenuBaseState
     {
-        public float offset;
+        private float offset;
         private Transform followTo;
-
+ 
         public override void EnterState(IStateManager stateManager)
         {
             base.EnterState(stateManager);
@@ -20,12 +21,29 @@ namespace states.cubes.menu
             // offset = TransformHelper.CalculateOffset(transform, followTo);
             offset = parentController.curOffset;
             SwipeMenuEvents.Current.OnHeadChanged += ProcessNewHead;
+            SwipeMenuEvents.Current.OnSwipeUp += CheckSwipedUp;
         }
+
+        private void CheckSwipedUp(Vector3 pos)
+        {
+            var bounds = transform.GetComponent<MeshRenderer>().bounds;
+            if (bounds.Contains(pos))
+            {
+                Debug.Log($"{transform.name} is guilty!");
+                transform.DOMove(
+                    parentController.ViewManager.menuCam.cam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 15)),
+                    1
+                );
+                
+            }
+        }
+        
         
         public override void ExitState(IStateManager stateManager)
         {
             SwipeMenuEvents.Current.OnHeadChanged -= ProcessNewHead;
             transform.name = transform.name.Replace("_active", "");
+            SwipeMenuEvents.Current.OnSwipeUp -= CheckSwipedUp;
         }
 
         private void ProcessNewHead(SliderMenuItemController newHead)
@@ -40,7 +58,7 @@ namespace states.cubes.menu
             try
             {
                 transform.localPosition = followTo.localPosition + Vector3.left * offset;
-                if (!ScreenHelper.CheckVisible(parentController.cam, transform.position))
+                if (!ScreenHelper.CheckVisible(parentController.ViewManager.menuCam.cam, transform.position))
                     ((CubeStateManager) stateManager).MoveToIdle();
             }
             catch (Exception e)

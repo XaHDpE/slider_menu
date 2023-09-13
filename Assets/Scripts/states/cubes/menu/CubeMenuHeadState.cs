@@ -3,6 +3,7 @@ using DG.Tweening;
 using input.slidermenu.controllers;
 using Lean.Common;
 using Lean.Touch;
+using settings;
 using states.controllers;
 using UnityEngine;
 
@@ -20,54 +21,54 @@ namespace states.cubes.menu
         public override void EnterState(IStateManager stateManager)
         {
             base.EnterState(stateManager);
-            scaleX = parentController.startBoundsX;
+            scaleX = parentController.ViewManager.GetItemSize();
             transform.name += "_head";
             mr = transform.GetComponent<MeshRenderer>();
-            mr.material.color = Color.red;
+            // mr.material.color = Color.red;
             lmt = ((CubeStateManager) stateManager).GetComponent<LeanManualTranslate>();
-            lmt.Multiplier = 0.01f;
+            lmt.Multiplier = SettingsReader.Instance.sliderMenuSettings.swipeSpeed;
+            lmt.DirectionA = parentController.ViewManager.GetSlideDirection();
             lmt.DirectionB = Vector3.zero;
             sliderTop = transform.GetComponentInParent<SliderTopController>();
             sliderTop.dragLmu.OnDelta.AddListener(HandleDragAside);
-            
             lastPosition = transform.localPosition;
-            
+            // LeanTouch.OnFingerUp += Test;
         }
 
         private void HandleDragAside(List<LeanFinger> fingers, float delta)
         {
-            lmt.TranslateA(delta);
+            var reducedDelta = delta;
+            // Debug.Log($"delta: {delta}, distance: {delta * lmt.Multiplier}");
+            lmt.TranslateA(reducedDelta);
         }
         
         public override void ExitState(IStateManager stateManager)
         {
             base.ExitState(stateManager);
             transform.name = transform.name.Replace("_head", "");
-            mr.material.color = Color.gray;
+            // mr.material.color = Color.gray;
             sliderTop.dragLmu.OnDelta.RemoveListener(HandleDragAside);
+            // LeanTouch.OnFingerUp -= Test;
         }
 
         public override void LogicUpdate(IStateManager stateManager)
         {
-
-            if (precisingPositionInProgress) return;
-            
+            /*if (precisingPositionInProgress) return;
             distanceTravelled += transform.localPosition.x - lastPosition.x;
-            if (transform.localPosition.Equals(lastPosition))
+            if (transform.localPosition.Equals(lastPosition) && Mathf.Abs(distanceTravelled) > 0)
             { 
-                if (Mathf.Abs(distanceTravelled) > 0) {
-                    MoveToClosestValidPoint(distanceTravelled, () =>
-                    {
-                        distanceTravelled = 0;
-                    });
-                }
+                MoveToClosestValidPoint(distanceTravelled, () =>
+                {
+                    distanceTravelled = 0; 
+                });
             }
             
-            lastPosition = transform.localPosition;
+            lastPosition = transform.localPosition;*/
         }
 
         private void MoveToClosestValidPoint(float distancePassed, TweenCallback callback)
         {
+            // Debug.Log($"distancePassed: {distancePassed}");
             precisingPositionInProgress = true;
             var delta = Mathf.Abs(distancePassed) < scaleX ? distancePassed : distancePassed%scaleX;
             var deltaV = transform.localPosition + Vector3.left * delta;

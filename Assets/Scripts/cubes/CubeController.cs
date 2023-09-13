@@ -1,16 +1,15 @@
-﻿using input.slidermenu.models;
-using states.controllers;
+﻿using states.controllers;
 using UnityEngine;
 
 namespace cubes
 {
 
     [RequireComponent(typeof(CubeStateManager))]
+    [RequireComponent(typeof(BoxCollider))]
     public class CubeController : MonoBehaviour
     {
-        public CubeStateManager stateManager;
-        public CubeLight model;
-        
+        private CubeStateManager stateManager;
+
         private void Awake()
         {
             if (TryGetComponent(out CubeStateManager stMgr))

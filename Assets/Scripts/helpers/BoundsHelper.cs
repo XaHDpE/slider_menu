@@ -79,12 +79,13 @@ namespace helpers
         public static bool IsInside(Vector3 pPoint, BoxCollider pBox)
         {
             pPoint = pBox.transform.InverseTransformPoint(pPoint) - pBox.center;
-            var lHalfX = (pBox.size.x * 0.5f);
-            var lHalfY = (pBox.size.y * 0.5f);
-            var l_HalfZ = (pBox.size.z * 0.5f);
+            var size = pBox.size;
+            var lHalfX = (size.x * 0.5f);
+            var lHalfY = (size.y * 0.5f);
+            var lHalfZ = (size.z * 0.5f);
             return (pPoint.x < lHalfX && pPoint.x > -lHalfX &&
                     pPoint.y < lHalfY && pPoint.y > -lHalfY &&
-                    pPoint.z < l_HalfZ && pPoint.z > -l_HalfZ);
+                    pPoint.z < lHalfZ && pPoint.z > -lHalfZ);
         }
         
         public static bool BoundsIsEncapsulated(Bounds encapsulator, Bounds encapsulating)

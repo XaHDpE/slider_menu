@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using BzKovSoft.ObjectSlicer;
 using cubes;
 using events;
+using extensions;
 using helpers;
-using input.slidermenu.controllers;
 using settings;
+using slicing.controllers;
+using slicing.models;
 using UnityEngine;
 
 namespace slicing
@@ -25,9 +27,6 @@ namespace slicing
             {
                 if (currPiece.transform.Equals(parentObj)) continue;
                 var currSlice = currPiece.gameObject;
-            
-                Debug.Log($"Axis: {axis}: currSlice: {currSlice}");
-            
                 for (var k = 1; k < numOfParts; k++)
                 {
                     var inPoint = startPoint + axis.Direction * dimensionSize * k / numOfParts;
@@ -38,16 +37,10 @@ namespace slicing
                     if (negGo != null && posGo != null)
                     {
                         currSlice = posGo; 
-                        //SetPosition(currSlice.transform, axis.Direction, k);
-                        // Debuggr.DrawPlane(inPoint, axis.Direction, Color.black);
                     }
                     else
                     {
-                        // case when plane does not intersect the spare part (result either Pos or Neg)
                         currSlice = currPiece.gameObject;
-                        // Debug.Log($"problem in: {currSlice}, iterator: ");
-                        // Debuggr.DrawPlane(inPoint, axis.Direction, Color.red);
-                        // currSlice.GetComponent<MeshRenderer>().material.color = Color.red;
                     }
 
                 }
@@ -85,8 +78,6 @@ namespace slicing
         
             BindObjects(parentObj);
 
-            FillInitialParams(parentObj);
-
             // restore size of the cube (Vector3.one)
             // parentObj.localScale /= cubeSizeV.x;
         
@@ -95,38 +86,43 @@ namespace slicing
 
         }
 
-        private static void FillInitialParams(Transform parent)
+        private SliceItem GetSliceInitParams(Transform tr)
         {
-            foreach (var cc in parent.GetComponentsInChildren<CubeController>())
+            var ccTransform = tr.transform;
+            return new SliceItem()
             {
-                var ccTransform = cc.transform;
-                cc.model.initialLocalPosition = ccTransform.localPosition;
-                cc.model.initialScale = ccTransform.localScale;
-                cc.model.initialRotation = ccTransform.rotation;
-            }
+                initialLocalPosition = ccTransform.localPosition,
+                initialScale = ccTransform.localScale,
+                initialRotation = ccTransform.rotation
+            };
         }
-    
+        
         private void BindObjects(Transform parent)
         {
-            foreach (var spPart in parent.GetComponentsInChildren<SparePartController>())
+            foreach (var si in parent.GetComponentsInChildren<SliceItemController>())
             {
-                var possibleParents = new Dictionary<Transform, int>();
-                if (spPart.transform.Equals(parent)) continue;
+                if (si.name.Equals(parent.name)) continue;
                 
+                var possibleParents = new Dictionary<Transform, int>();
+
                 foreach (var cube in parent.GetComponentsInChildren<CubeController>())
                 {
-                    var cubeColl = cube.GetComponent<BoxCollider>();
                     var cubeTransform = cube.transform;
+                    var cubeColl = cubeTransform.GetComponent<BoxCollider>();
 
-                    if (BoundsHelper.IsInside(spPart.GetComponent<MeshFilter>().mesh.bounds.center, cubeColl))
+                    if (BoundsHelper.IsInside(si.GetComponent<MeshFilter>().mesh.bounds.center, cubeColl))
                     {
                         if (possibleParents.ContainsKey(cube.transform))
+                        {
                             possibleParents[cubeTransform] = possibleParents[cube.transform] + 1;
+                        }
                         else
+                        {
                             possibleParents.Add(cube.transform, 1);
-                    
-                        spPart.transform.SetParent(cubeColl.transform);
-                    
+                        }
+
+                        si.transform.SetParent(cube.transform);
+                        si.model = GetSliceInitParams(cube.transform);
                     }
                 }
 
@@ -134,7 +130,7 @@ namespace slicing
                 {
                     foreach (var pt in possibleParents)
                     {
-                        Debug.Log($"!!!--- for object [{spPart}], the parent [{pt.Key}] is found ({pt.Value}) vertices");
+                        Debug.Log($"!!!--- for object [{si}], the parent [{pt.Key}] is found ({pt.Value}) vertices");
                     }
                 }
 
@@ -173,7 +169,7 @@ namespace slicing
             posGo = null;
             negGo = null;
 
-            print($"targetGo: {targetGo}");
+            // print($"targetGo: {targetGo}");
             var meshFilter = targetGo.GetComponent<MeshFilter>();
             var meshRenderer = targetGo.GetComponent<MeshRenderer>();
             var mesh = meshFilter.mesh;
@@ -190,7 +186,7 @@ namespace slicing
             var sliceResult = meshDissector.Slice();
 
             // apply result back to our object
-            Debug.Log($"SliceResult: {sliceResult}");
+            //Debug.Log($"SliceResult: {sliceResult}");
 
             if (sliceResult == SliceResult.Sliced)
             {
@@ -215,7 +211,8 @@ namespace slicing
                 //mf1.sharedMesh = mesh;
                 mf1.transform.localScale = negGo.transform.localScale;
                 mf1.transform.SetParent(negGo.transform.parent);
-                mf1.gameObject.AddComponent<SparePartController>();
+                // mf1.gameObject.AddComponent<SparePartController>();
+                mf1.gameObject.AddComponent<SliceItemController>();
                 posGo = posObj;
             }
         }

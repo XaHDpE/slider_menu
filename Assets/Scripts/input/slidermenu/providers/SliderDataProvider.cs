@@ -1,35 +1,70 @@
-﻿using cubes;
+﻿using System.Collections.Generic;
+using cubes;
+using helpers;
 using input.slidermenu.controllers;
-using input.slidermenu.models;
+using models.cube;
+using slicing.controllers;
 using UnityEngine;
 
- namespace input.slidermenu.providers
+namespace input.slidermenu.providers
 {
-    public static class SliderDataProvider
+    public class SliderDataProvider
     {
-        
-        public static SliderMenuItemController[] Fill(Transform parentObj, int itemsCount)
+        private SliderMenuItemController[] items;
+
+        public SliderDataProvider(Transform slicesTop, Component menuTop)
         {
-            var items = new SliderMenuItemController[itemsCount];
-            for (var i = 0; i < itemsCount; i++)
+            var menuItems = new List<SliderMenuItemController>();
+            foreach (var cc in slicesTop.GetComponentsInChildren<CubeController>())
             {
-                var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                // var cube = go.gameObject.AddComponent<CubeCtr>();
-                // cube.gameObject.SetActive(false);
-                go.name += $"_{i}";
-                go.transform.SetParent(parentObj);
-                items[i] = go.gameObject.AddComponent<SliderMenuItemController>();
-                items[i].MoveToInactive();
+                if (cc.GetComponentInChildren<SliceItemController>() != null)
+                {
+                    var smi = cc.gameObject.AddComponent<SliderMenuItemController>();
+                    TransformHelper.ChangeLayersRecursively(smi.transform, "Slider Menu");
+                    smi.transform.SetParent(menuTop.transform);
+                    smi.MoveSmiToInactive();
+                    menuItems.Add(smi);
+                }
             }
             
-            for (var i = 0; i < itemsCount; i++)
+            // Debug.Log($"menuItems: {menuItems.Count}");
+            for (var i = 0; i < menuItems.Count; i++)
             {
-                items[i].next = items[(items.Length - 1 + i) % items.Length];
-                items[i].prev = items[(items.Length + 1 + i) % items.Length];
+                menuItems[i].model = new SliderMenuItem()
+                {
+                    next = menuItems[(menuItems.Count - 1 + i) % menuItems.Count],
+                    prev = menuItems[(menuItems.Count + 1 + i) % menuItems.Count]
+                };
             }
-            
-            return items;
+            items = menuItems.ToArray();
         }
 
+        public SliderMenuItemController[] Items => items;
+        
+        /*public void SetPrevAsNewCurrent()
+        {
+            current = current.model.prev;
+        }
+
+        public void SetNextAsNewCurrent()
+        {
+            current = (current == null) ? items[0] : current.model.next;
+        }
+
+        public SliderMenuItemController Head => head;
+        
+        public void SetHead()
+        {
+            if (head != null) head.MoveSmiToActive();
+            head = current;
+            head.MoveSmiToHead();
+            SwipeMenuEvents.Current.HeadChanged(current);
+        }
+
+        public bool CurrentIsHead()
+        {
+            return current.Equals(head);
+        }*/
+        
     }
 }

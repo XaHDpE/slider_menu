@@ -417,6 +417,8 @@ GameObject:
   - component: {fileID: 968095051}
   - component: {fileID: 968095052}
   - component: {fileID: 968095053}
+  - component: {fileID: 968095055}
+  - component: {fileID: 968095054}
   m_Layer: 0
   m_Name: Swipe Up
   m_TagString: Untagged
@@ -445,7 +447,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 968095050}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3133a0ba1eb64159b6436464b6ff86fd, type: 3}
   m_Name: 
@@ -456,7 +458,7 @@ MonoBehaviour:
     RequiredFingerCount: 0
     RequiredMouseButtons: 0
     RequiredSelectable: {fileID: 0}
-  ignoreIfStatic: 0
+  ignoreIfStatic: 1
   requiredArc: 60
   requiredAngle: 0
   oneWay: 1
@@ -490,6 +492,97 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 471806875}
+--- !u!114 &968095054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 968095050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d6af6fa132bb314fa56a5d581280021, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  requiredAngle: 0
+  requiredArc: 60
+  onFinger:
+    m_PersistentCalls:
+      m_Calls: []
+  modify: 0
+  coordinate: 0
+  multiplier: 1
+  onDelta:
+    m_PersistentCalls:
+      m_Calls: []
+  onDistance:
+    m_PersistentCalls:
+      m_Calls: []
+  ScreenDepth:
+    Conversion: 0
+    Camera: {fileID: 471806875}
+    Object: {fileID: 0}
+    Layers:
+      serializedVersion: 2
+      m_Bits: 4294967291
+    Distance: 10
+  onWorldFrom:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 968095053}
+        m_TargetAssemblyTypeName: input.slidermenu.controllers.MenuSwipeProcessor,
+          Assembly-CSharp
+        m_MethodName: HandleWorldFrom
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onWorldTo:
+    m_PersistentCalls:
+      m_Calls: []
+  onWorldDelta:
+    m_PersistentCalls:
+      m_Calls: []
+  onWorldFromTo:
+    m_PersistentCalls:
+      m_Calls: []
+  ignoreIsOverGui: 0
+  requiredSelectable: {fileID: 0}
+--- !u!114 &968095055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 968095050}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db8d8b3ece124964189f4589473b0600, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Current: {x: 0, y: 0, z: 0}
+  Threshold: 1
+  Step: 0
+  onDeltaX:
+    m_PersistentCalls:
+      m_Calls: []
+  onDeltaY:
+    m_PersistentCalls:
+      m_Calls: []
+  onDeltaZ:
+    m_PersistentCalls:
+      m_Calls: []
+  onDeltaXY:
+    m_PersistentCalls:
+      m_Calls: []
+  onDeltaXYZ:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1292964849
 GameObject:
   m_ObjectHideFlags: 0
@@ -1090,6 +1183,18 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 507074615}
         m_TargetAssemblyTypeName: leanExtended.LeanMultiDirectionExtended, Assembly-CSharp
+        m_MethodName: AddFinger
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 968095054}
+        m_TargetAssemblyTypeName: Lean.Touch.LeanManualSwipe, LeanTouchPlus
         m_MethodName: AddFinger
         m_Mode: 0
         m_Arguments:

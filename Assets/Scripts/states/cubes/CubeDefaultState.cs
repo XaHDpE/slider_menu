@@ -1,4 +1,6 @@
-﻿namespace states.cubes
+﻿using states.controllers;
+
+namespace states.cubes
 {
     public class CubeDefaultState : CubeBaseState
     {

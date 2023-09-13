@@ -8,14 +8,16 @@ namespace states.cubes.menu
         public override void EnterState(IStateManager stateManager)
         {
             base.EnterState(stateManager);
-            if (transform.TryGetComponent(out MeshRenderer mr))
-                mr.enabled = false;
+            transform.gameObject.SetActive(false);
+            /*if (transform.TryGetComponent(out MeshRenderer mr))
+                mr.enabled = false;*/
         }
         
         public override void ExitState(IStateManager stateManager)
         {
-            var trn = ((CubeStateManager) stateManager).transform; 
-            trn.GetComponent<MeshRenderer>().enabled = true;
+            /*var trn = ((CubeStateManager) stateManager).transform; 
+            trn.GetComponent<MeshRenderer>().enabled = true;*/
+            transform.gameObject.SetActive(true);
         }
 
         public override void LogicUpdate(IStateManager stateManager)

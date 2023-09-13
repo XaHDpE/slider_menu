@@ -6,9 +6,11 @@
         
         public GenericSettings genericSettings;
         public SliderMenuSettings sliderMenuSettings;
+        public SliderSettings sliderSettings;
         
         public static GenericSettings Gs;
         public static SliderMenuSettings Sms;
+        public static SliderSettings ss;
         
         public static SettingsReader Instance;
 
@@ -27,6 +29,9 @@
 
             if (Sms == null)
                 Sms = sliderMenuSettings;
+
+            if (ss == null)
+                ss = sliderSettings;
 
         }
         

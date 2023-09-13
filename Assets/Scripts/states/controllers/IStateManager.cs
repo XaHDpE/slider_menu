@@ -1,4 +1,4 @@
-﻿namespace states.cubes
+﻿namespace states.controllers
 {
     public interface IStateManager
     {
