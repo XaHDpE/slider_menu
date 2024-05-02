@@ -14,15 +14,15 @@ namespace map
     
         private void Start()
         {
-            CustomGameEvents.Current.OnObjectSliced += CreateMap;
+            // CustomGameEvents.Current.OnObjectSliced += CreateMap;
         }
 
         private void OnDestroy()
         {
-            CustomGameEvents.Current.OnObjectSliced -= CreateMap;
+            // CustomGameEvents.Current.OnObjectSliced -= CreateMap;
         }
 
-        private void CreateMap(Transform parentObj)
+        private void CreateMap(Transform parentObj, Vector3Int counts)
         {
             targetTop = parentObj;
         
@@ -32,29 +32,33 @@ namespace map
             for (var i = 0; i < cubes.Length; i++)
             {
                 var cube = cubes[i];
-                if (cube.transform.childCount > 0)
-                {
-                    var sliceItemModel = cube.GetComponentInChildren<SliceItemController>().model;
-                    positions[i] = sliceItemModel.initialLocalPosition;
                 
-                    var parent = Instantiate(
-                        SettingsReader.Gs.shellPrefab, 
-                        sliceItemModel.initialLocalPosition, 
-                        sliceItemModel.initialRotation, 
-                        transform
-                    );
+                if (cube.transform.childCount <= 0) continue;
                 
-                    parent.transform.localScale = cube.transform.localScale;
+                Debug.Log($"cube: {cube.InFront()}");
+                
+                var sliceItemModel = cube.GetComponentInChildren<SliceItemController>().model;
+                positions[i] = sliceItemModel.initialLocalPosition;
+                
+                var shell = Instantiate(
+                    SettingsReader.Gs.shellPrefab, 
+                    sliceItemModel.initialLocalPosition, 
+                    sliceItemModel.initialRotation, 
+                    transform
+                );
+                
+                shell.transform.localScale = cube.transform.localScale;
                     
-                    Instantiate(
-                        SettingsReader.Gs.mapPointPrefab,
-                        sliceItemModel.initialLocalPosition,
-                        sliceItemModel.initialRotation,
-                        parent.transform
-                    );
-
-                }
+                Instantiate(
+                    SettingsReader.Gs.mapPointPrefab,
+                    sliceItemModel.initialLocalPosition,
+                    sliceItemModel.initialRotation,
+                    shell.transform
+                );
             }
+            
+            CustomGameEvents.Current.MapCreated(transform);
+            
         }
     }
 }

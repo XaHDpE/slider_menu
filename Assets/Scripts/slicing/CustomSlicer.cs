@@ -17,6 +17,10 @@ namespace slicing
         [SerializeField] private GameObject target;
         [SerializeField] private int numberOfSlicesPerMinimumSize;
         [SerializeField] private Material internalMaterial;
+        
+        private int numOfPartsX;
+        private int numOfPartsY;
+        private int numOfPartsZ;        
 
         // private Vector3 cubeSizeV;
     
@@ -60,9 +64,9 @@ namespace slicing
             var minDimension = Math.Min(Math.Min(b.size.x, b.size.y), b.size.z);
             var cutSize = minDimension / numOfSpareParts;
         
-            var numOfPartsX = (float) Math.Ceiling(b.size.x / cutSize);
-            var numOfPartsY = (float) Math.Ceiling(b.size.y / cutSize);
-            var numOfPartsZ = (float) Math.Ceiling(b.size.z / cutSize);
+            numOfPartsX = (int) Math.Ceiling(b.size.x / cutSize);
+            numOfPartsY = (int) Math.Ceiling(b.size.y / cutSize);
+            numOfPartsZ = (int) Math.Ceiling(b.size.z / cutSize);
         
             /*Debug.Log($"xSize: {b.size.x}, ySize: {b.size.y}, zSize: {b.size.z}. minDimension: {minDimension}." +
                   $"cutSize: {cutSize}, numOfCutsX: {numOfPartsX}, numOfCutsY: {numOfPartsY}, numOfCutsZ: {numOfPartsZ}"
@@ -82,7 +86,10 @@ namespace slicing
             // parentObj.localScale /= cubeSizeV.x;
         
             // Round(filteredCubes);
-            CustomGameEvents.Current.ObjectSliced(parentObj); 
+            CustomGameEvents.Current.ObjectSliced(
+                parentObj, 
+                new Vector3Int(numOfPartsX, numOfPartsY, numOfPartsZ)
+                ); 
 
         }
 
@@ -150,19 +157,21 @@ namespace slicing
                             startPoint.z + edgeSize / 2 + edgeSize * k
                         );
 
-                        PlaceCube(nPos, edgeSize);   
+                        PlaceCube(nPos, edgeSize, new Vector3Int(i, j, k));   
                     }
                 }
             }
         }
-        private void PlaceCube(Vector3 pos, float sizeVal)
+        private void PlaceCube(Vector3 pos, float sizeVal, Vector3Int placeExtended)
         {
             var size = new Vector3(sizeVal, sizeVal, sizeVal);
             var cube = Instantiate(SettingsReader.Gs.shellPrefab, pos, Quaternion.identity);
             cube.transform.SetParent(target.transform.parent);
             cube.transform.localPosition = pos;
             cube.transform.localScale = size;
-            // cubeSizeV = size;
+            
+            cube.GetComponent<CubeController>().PlaceExtended = placeExtended;
+            
         }
         private void Cut(GameObject targetGo, string newNamePrefix, Plane pln, out GameObject posGo, out GameObject negGo)
         {

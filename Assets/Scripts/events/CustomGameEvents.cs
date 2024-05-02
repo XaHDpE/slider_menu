@@ -13,11 +13,24 @@ namespace events
             Debug.Log("CustomGameEvents initialized");
         }
 
-        public event Action<Transform> OnObjectSliced;
+        public event Action<Transform, Vector3Int> OnObjectSliced;
+        public event Action<Transform> OnMapCreated;
 
-        public void ObjectSliced(Transform top)
+        public void MapCreated(Transform top)
         {
-            OnObjectSliced?.Invoke(top);
+            OnMapCreated?.Invoke(top);
+        }
+        
+        public void ObjectSliced(Transform top, Vector3Int slicesCount)
+        {
+            OnObjectSliced?.Invoke(top, slicesCount);
+        }
+
+        public event Action<Transform> OnShuffleDone;
+        
+        public void ShuffleDone(Transform top)
+        {
+            OnShuffleDone?.Invoke(top);
         }
 
         public event Action<Transform> OnCarouselTopSet;

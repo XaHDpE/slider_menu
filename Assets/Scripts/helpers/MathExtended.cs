@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using Random = System.Random;
 
 namespace helpers
 {
@@ -26,6 +27,17 @@ namespace helpers
             var n1 = m * q;
             var n2 = (n * m) > 0 ? (m * (q + 1)) : (m * (q - 1));
             return Math.Abs(n - n1) < Math.Abs(n - n2) ? n1 : n2;
+        }
+
+        public static Vector3 GetRandomRotation()
+        {
+            var rnd = new Random();
+            int[] angles = {0, 90, 180, 270}; 
+            return new Vector3(
+                angles[rnd.Next(0, angles.Length)],
+                angles[rnd.Next(0, angles.Length)],
+                angles[rnd.Next(0, angles.Length)]
+                );
         }
         
     }

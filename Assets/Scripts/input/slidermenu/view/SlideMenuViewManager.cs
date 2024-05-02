@@ -77,7 +77,7 @@ namespace input.slidermenu.view
             var totalLen = Vector3.Distance(vph.GetVpLeftBottom(), vph.GetVpRightBottom());
             var rowSize = totalLen / SettingsReader.Instance.sliderMenuSettings.numberOfCubes;
             var cubeSz = rowSize * (1 - SettingsReader.Instance.sliderMenuSettings.relativeItemInterval);
-            Debug.Log($"row sizee: {rowSize}, cubeSz: {cubeSz} total: {totalLen}, cubeSide: {cubeSide}");
+            // Debug.Log($"row size: {rowSize}, cubeSz: {cubeSz} total: {totalLen}, cubeSide: {cubeSide}");
             return new Vector3(cubeSz, cubeSz , cubeSz);
         }
 

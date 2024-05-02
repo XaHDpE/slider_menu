@@ -78,7 +78,7 @@ namespace input.Menu
                 
                 nView.gameObject.layer = LayerMask.NameToLayer("Slider Menu");
                 
-                Debug.Log($"nview( {curPos} ): {nView.transform.localPosition}, {nView.transform.position}");
+                // Debug.Log($"nview( {curPos} ): {nView.transform.localPosition}, {nView.transform.position}");
                 
                 nView.InitView(
                     leftBorder.transform.localPosition, 
